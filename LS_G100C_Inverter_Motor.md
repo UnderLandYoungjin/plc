@@ -5,7 +5,7 @@
 <img width="1209" height="459" alt="image" src="https://github.com/user-attachments/assets/acbd50be-88c8-47bf-af73-ac50ebe07b15" />
 
 
-인버터의 DRV는 3번, 인버터의 주파수 FRQ는 6번이  -<-------------485 통신 쓴다.
+인버터의 DRV는 3번, 인버터의 주파수 FRQ는 6번이  -<-------------485 통신 쓴다.(인버터에서 설정할때)
 
 
 <img width="1894" height="894" alt="image" src="https://github.com/user-attachments/assets/3d0418e9-f16a-41dc-aba0-0fd0e744651d" />
