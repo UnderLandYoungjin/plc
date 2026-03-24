@@ -1,5 +1,9 @@
 # LS G100 인버터 WPF 제어 프로그램
 
+
+<img width="893" height="461" alt="image" src="https://github.com/user-attachments/assets/7d5ddb8d-e089-4464-97d7-745c00616986" />
+https://youtube.com/shorts/5LsBQMk8iSw
+
 ## 프로젝트 문서 (전체 소스코드 포함)
 
 ---
