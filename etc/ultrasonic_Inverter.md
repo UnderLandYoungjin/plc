@@ -1,7 +1,68 @@
-##초음파 센서로 인버터 안전정지
+# 초음파 센서로 인버터 안전정지
 
-https://www.youtube.com/watch?v=CIfZujDv2W8
+## 영상
 
+[![영상 보기](https://img.youtube.com/vi/CIfZujDv2W8/0.jpg)](https://www.youtube.com/watch?v=CIfZujDv2W8)
+
+> 클릭하면 YouTube 영상으로 이동합니다.
+
+---
+
+## 개요
+
+| 항목 | 내용 |
+|------|------|
+| Arduino | HC-SR04 초음파 센서로 거리 측정 → 시리얼 전송 |
+| Python | 거리값 수신 → LS G100 인버터 Modbus RTU 제어 |
+| 동작 | 정방향 10Hz 기동 → 거리 ≤25cm 정지 → 2초 이상 >25cm 유지 시 재기동 |
+
+---
+
+## 시스템 구성
+
+```
+[HC-SR04] ──(TRIG/ECHO)──▶ [Arduino UNO] ──(USB Serial)──▶ [PC Python]
+                                                                │
+                                                          (RS-485)
+                                                                │
+                                                     [LS G100 인버터] ──▶ [모터]
+```
+
+---
+
+## 1. Arduino 코드 (초음파 센서)
+
+```cpp
+// HC-SR04 초음파 센서 + Arduino UNO
+// TRIG : 9번 핀 / ECHO : 10번 핀
+
+const int TRIG = 9;
+const int ECHO = 10;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+}
+
+void loop() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH);
+  float distance = duration * 0.034 / 2.0;
+
+  Serial.println(distance);
+  delay(100);
+}
+```
+
+---
+
+## 2. Python 통합 제어 코드
 
 ```python
 """
@@ -9,8 +70,8 @@ LS G100 인버터 + 초음파 센서 연동 제어
 ──────────────────────────────────────
 · Arduino : 초음파 거리값 시리얼 전송
 · Python  : 거리값 수신 → 인버터 Modbus RTU 제어
-· 동작    : 정방향 20Hz 기동, 거리 ≤15cm → 정지
-            거리 >15cm 를 2초 이상 유지 → 재기동
+· 동작    : 정방향 10Hz 기동, 거리 ≤25cm → 정지
+            거리 >25cm 를 2초 이상 유지 → 재기동
 """
 
 import serial
@@ -72,7 +133,6 @@ def stop(ser):
 
 
 def main():
-    # 시리얼 포트 열기
     ard = serial.Serial(ARDUINO_PORT, BAUDRATE, timeout=1)
     inv = serial.Serial(
         port=INVERTER_PORT, baudrate=BAUDRATE,
@@ -81,18 +141,18 @@ def main():
     )
     inv.reset_input_buffer()
     ard.reset_input_buffer()
-    time.sleep(2)  # 아두이노 리셋 대기
+    time.sleep(2)
 
     print(f"아두이노: {ARDUINO_PORT} / 인버터: {INVERTER_PORT}")
     print(f"운전 주파수: {TARGET_FREQ}Hz / 정지 거리: ≤{DIST_THRESHOLD}cm\n")
 
-    # 초기 기동: 주파수 설정 → 정방향 운전
+    # 초기 기동
     set_freq(inv, TARGET_FREQ)
     time.sleep(0.1)
     run_fwd(inv)
 
     motor_running = True
-    clear_since = None  # 거리 >15cm 시작 시각
+    clear_since = None
 
     try:
         while True:
@@ -104,17 +164,16 @@ def main():
             except ValueError:
                 continue
 
-            # 상태 표시
             status = "RUN" if motor_running else "STOP"
             print(f"거리: {dist:6.1f}cm  | 모터: {status}")
 
-            # ── 정지 조건: 거리 ≤ 15cm & 모터 가동 중 ──
+            # 정지 조건
             if dist <= DIST_THRESHOLD and motor_running:
                 stop(inv)
                 motor_running = False
                 clear_since = None
 
-            # ── 재기동 조건: 거리 > 15cm 를 2초 이상 유지 ──
+            # 재기동 조건
             elif dist > DIST_THRESHOLD and not motor_running:
                 if clear_since is None:
                     clear_since = time.time()
@@ -125,7 +184,6 @@ def main():
                     motor_running = True
                     clear_since = None
 
-            # 거리 ≤ 15cm 이면 타이머 리셋 (정지 상태에서 다시 가까워진 경우)
             elif dist <= DIST_THRESHOLD and not motor_running:
                 clear_since = None
 
@@ -142,4 +200,21 @@ if __name__ == "__main__":
     main()
 ```
 
+---
 
+## 3. 동작 흐름
+
+1. **시작** → 인버터 10Hz 설정 → 정방향 기동
+2. **거리 ≤ 25cm** → 즉시 모터 정지
+3. **거리 > 25cm 가 2초 이상 유지** → 모터 재기동
+4. 재기동 대기 중 다시 25cm 이하 → 타이머 리셋 (재기동 안 됨)
+5. **Ctrl+C** → 안전 정지 후 종료
+
+---
+
+## 4. 사용 전 확인사항
+
+- `ARDUINO_PORT` : 아두이노가 연결된 COM 포트 확인 (장치관리자)
+- `INVERTER_PORT` : RS-485 컨버터 COM 포트 확인
+- 인버터 파라미터 : 통신속도 9600bps, Slave ID 1, Modbus RTU 모드
+- Python 패키지 : `pip install pyserial`
