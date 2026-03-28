@@ -4,6 +4,10 @@
 <img width="893" height="461" alt="image" src="https://github.com/user-attachments/assets/7d5ddb8d-e089-4464-97d7-745c00616986" />
 https://youtube.com/shorts/5LsBQMk8iSw
 
+
+https://github.com/user-attachments/assets/5c80705d-5a0e-4a6e-ad17-71d5f963bcf7
+
+
 ## 프로젝트 문서 (전체 소스코드 포함)
 
 ---
