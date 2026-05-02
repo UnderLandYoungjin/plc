@@ -22,3 +22,8 @@
 ---
 <img width="1901" height="1072" alt="image" src="https://github.com/user-attachments/assets/b8fa961e-818b-47f4-ab38-550f637e763a" />
 
+--
+
+스크립트
+
+<img width="1906" height="1073" alt="image" src="https://github.com/user-attachments/assets/1db33fa4-94d7-49eb-8982-418816532472" />
