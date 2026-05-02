@@ -6,3 +6,17 @@
 --
 
 <img width="1913" height="1074" alt="image" src="https://github.com/user-attachments/assets/9cf4946b-c3fe-47de-8d2a-c3987099b644" />
+
+
+---
+
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/64f9f105-c124-415d-96f2-d59c9372a695" />
+
+---
+
+네트워크연결
+
+---
+
+<img width="1911" height="1072" alt="image" src="https://github.com/user-attachments/assets/9665e289-251b-4bca-b045-de7d4f46b67e" />
+
