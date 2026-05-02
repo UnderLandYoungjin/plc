@@ -17,6 +17,8 @@
 네트워크연결
 
 ---
+<img width="1914" height="1074" alt="image" src="https://github.com/user-attachments/assets/f69e0394-9c27-4890-872b-311a99b97522" />
 
-<img width="1911" height="1072" alt="image" src="https://github.com/user-attachments/assets/9665e289-251b-4bca-b045-de7d4f46b67e" />
+---
+<img width="1901" height="1072" alt="image" src="https://github.com/user-attachments/assets/b8fa961e-818b-47f4-ab38-550f637e763a" />
 
