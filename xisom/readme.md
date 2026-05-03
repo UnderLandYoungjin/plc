@@ -35,3 +35,15 @@
 
 
 <img width="1906" height="1073" alt="image" src="https://github.com/user-attachments/assets/1db33fa4-94d7-49eb-8982-418816532472" />
+
+
+
+---
+
+# 2일차
+
+--
+
+
+<img width="1915" height="1071" alt="image" src="https://github.com/user-attachments/assets/9dee3896-03d0-49e8-8540-886453f6bdf2" />
+
